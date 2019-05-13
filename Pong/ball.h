@@ -8,11 +8,15 @@ private:
 	Vector2f position;
 	RectangleShape ballShape;
 
+	bool state;
+
 	float xVelocity = 0.2f;
 	float yVelocity = 0.2f;
 
+	float ballSpeed = .6f;
+
 public:
-	Ball(float startX, float startY);
+	Ball(float startX, float startY, bool flag);
 
 	FloatRect getPosition();
 
@@ -24,9 +28,13 @@ public:
 
 	void reboundBatOrTop();
 
-	void hitBottom();
+	void moveLeft();
 
-	void update();
+	void moveRight();
+
+	void resetPosition(float xPos, float yPos);
+
+	void update(bool flag);
 
 };
 

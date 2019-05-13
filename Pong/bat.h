@@ -26,4 +26,6 @@ public:
 
 	void update();
 
+	void resetPosition(float xPos, float yPos);
+
 }; 

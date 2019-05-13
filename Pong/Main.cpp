@@ -9,16 +9,17 @@ using namespace sf;
 
 int main() {
 
-	int windowWidth = 1024;
+	int windowWidth = 780;
 	int windowHeight = 568;
 
 	RenderWindow window(VideoMode(windowWidth, windowHeight), "Pong");
 
 	int lives = 3;
 	int score = 0;
+	bool flag = 0;
 
 	Bat bat(windowWidth / 2, windowHeight - 20);
-	Ball ball(windowWidth / 2, 1);
+	Ball ball(windowWidth / 2 + 20, windowHeight-30, flag);
 
 	Text hud;
 
@@ -49,8 +50,10 @@ int main() {
 		}
 
 		if (ball.getPosition().top > windowHeight) {
-			ball.hitBottom();
+			ball.resetPosition(windowWidth / 2 + 20, windowHeight - 30);
 			lives--;
+			flag = 0;
+			bat.resetPosition(windowWidth / 2, windowHeight - 20);
 
 			if (lives < 1) {
 				score = 0;
@@ -60,18 +63,35 @@ int main() {
 
 		if (ball.getPosition().top < 0) {
 			ball.reboundBatOrTop();
+			flag = 1;
 			score++;
 		}
 
 		if (ball.getPosition().left < 0 || ball.getPosition().left + 10 > windowWidth) {
 			ball.reboundSides();
+			flag = 1;
 		}
 
 		if (ball.getPosition().intersects(bat.getPosition())) {
 			ball.reboundBatOrTop();
+			flag = 1;
 		}
 
-		ball.update();
+		if (!flag) {
+			if (Keyboard::isKeyPressed(Keyboard::Left) && bat.getPosition().left >= 1) {
+				bat.moveLeft();
+				ball.moveLeft();
+			}
+			else if (Keyboard::isKeyPressed(Keyboard::Right) && bat.getPosition().left + 50 <= windowWidth - 1) {
+				bat.moveRight();
+				ball.moveRight();
+			}
+			else if (Keyboard::isKeyPressed(Keyboard::Space) && bat.getPosition().left + 50 <= windowWidth - 1) {
+				flag = 1;
+			}
+		}
+
+		ball.update(flag);
 		bat.update();
 
 		std::stringstream ss;

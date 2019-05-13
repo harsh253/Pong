@@ -1,12 +1,14 @@
 #include "stdafx.h"
 #include "bat.h"
 
+using namespace sf;
+
 Bat::Bat(float startX, float startY)
 {
 	position.x = startX;
 	position.y = startY;
 
-	batShape.setSize(sf::Vector2f(50, 5));
+	batShape.setSize(Vector2f(50, 5));
 	batShape.setPosition(position);
 }
 
@@ -24,6 +26,11 @@ void Bat::moveLeft() {
 
 void Bat::moveRight() {
 	position.x += batSpeed;
+}
+
+void Bat::resetPosition(float x, float y) {
+	position.x = x;
+	position.y = y;
 }
 
 void Bat::update() {

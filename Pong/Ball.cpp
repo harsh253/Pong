@@ -1,12 +1,16 @@
 #include "stdafx.h"
 #include "ball.h"
 
-Ball::Ball(float startX, float startY) {
+using namespace sf;
+
+Ball::Ball(float startX, float startY, bool flag) {
 
 	position.x = startX;
 	position.y = startY;
 
-	ballShape.setSize(sf::Vector2f(10, 10));
+	state = flag;
+
+	ballShape.setSize(Vector2f(10, 10));
 	ballShape.setPosition(position);
 }
 
@@ -31,14 +35,26 @@ void Ball::reboundBatOrTop() {
 	yVelocity = -yVelocity;
 }
 
-void Ball::hitBottom() {
-	position.y = 1;
-	position.x = 500;
+void Ball::moveLeft() {
+	position.x -= ballSpeed;
 }
 
-void Ball::update() {
-	position.x += xVelocity;
-	position.y += yVelocity;
+void Ball::moveRight() {
+	position.x += ballSpeed;
+}
 
-	ballShape.setPosition(position);
+void Ball::resetPosition(float xPos, float yPos) {
+	position.y = yPos;
+	position.x = xPos;
+}
+
+void Ball::update(bool state) {
+	if (state) {
+		position.x += xVelocity;
+		position.y += yVelocity;
+		ballShape.setPosition(position);
+	}
+	else {
+		ballShape.setPosition(position);
+	}
 }
